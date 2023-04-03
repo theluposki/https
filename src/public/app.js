@@ -56,21 +56,37 @@ const decrypt = async (key, ciphertext) => {
 }
 
 
+
+
+
 async function init() {
+
+  const panelView = document.querySelector(".panelView")
+
   const keyPair = await generateKey()
+  
 
-  const encrypted = await encrypt({ name: "Luposki"}, keyPair.publicKey)
-
-  const decrypted = await decrypt(keyPair.privateKey, encrypted.ciphertext)
-
-  console.log(localStorage.getItem("user"))
-
-  localStorage.setItem("user", encrypted.ciphertext)
+  const text = document.getElementById("text")
+  
+  document.getElementById("enc").addEventListener("click", async () => {
+    const encrypted = await encrypt(text.value, keyPair.publicKey)
+    
+    console.log(encrypted.ciphertext)
+    
+    panelView.innerHTML = encrypted.ciphertext
+  })
   
   
-  console.log(encrypted.ciphertext)
+  document.getElementById("dec").addEventListener("click", async () => {
+    console.log(typeof text.value)
+    const decrypted = await decrypt(keyPair.privateKey, text.value)
+    
+    console.log(decrypted)
 
-  console.log(decrypted)
+    panelView.innerHTML = decrypted
+  })
+
+
 }
 
 init()
