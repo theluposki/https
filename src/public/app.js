@@ -1,39 +1,34 @@
-import { generateKey, encrypt, decrypt } from "./cryptoUtil.js"
+import { generateKey, encrypt, decrypt, pack, unpack } from "./cryptoUtil.js"
 
 const panelView = document.querySelector(".panelView")
 const text = document.getElementById("text")
 
-let textEnc
+let textEnc;
 
 async function init() {
-  const keyPair = await generateKey()
+  const key = await generateKey()
+  console.log(key)
 
-  console.log(keyPair)
   
   document.getElementById("enc").addEventListener("click", async () => {
-    const { ciphertext, buffer } = await encrypt(text.value, keyPair)
-    
-    textEnc =ciphertext
+    const { cipher, iv } = await encrypt(text.value, key)
 
-    console.log(textEnc)
-    console.log(buffer)
+    const result = {
+      cipher: pack(cipher),
+      iv: pack(iv)
+    }
 
-    panelView.innerHTML = textEnc // encrypted.ciphertext
+    textEnc = result
+
+    console.log(result)
+    panelView.innerHTML = `<pre>${JSON.stringify(result, null, 4)}</pre>`
   })
 
-
-
-  
-  
   document.getElementById("dec").addEventListener("click", async () => {
-    console.log(text.value)
+    const final = await decrypt(unpack(textEnc.cipher), key, unpack(textEnc.iv))
 
-    const decrypted = await decrypt(keyPair, textEnc)
-    
-    console.log(decrypted)
-
-    panelView.innerHTML = decrypted
-    
+    console.log(final)
+    panelView.innerHTML = `<pre>${final}</pre>`
   })
 
 }

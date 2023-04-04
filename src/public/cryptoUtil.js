@@ -1,58 +1,66 @@
-const SubtleCrypto = window.crypto.subtle
-
-let iv;
-
 export const generateKey = async () => {
   const algorithm = {
     name: "AES-GCM",
     length: 256,
   }
 
-  return await SubtleCrypto.generateKey(algorithm, true, ["encrypt", "decrypt"])
+  return await window.crypto.subtle.generateKey(algorithm, true, ["encrypt", "decrypt"])
 }
 
-function getMessageEncoding(message) {
-  let enc = new TextEncoder();
-  return enc.encode(message);
+const encode = (data) => {
+  const encoder = new TextEncoder()
+  return encoder.encode(data)
+}
+
+const decode = (bytestream) => {
+  const decoder = new TextDecoder()
+  return decoder.decode(bytestream)
+}
+
+const generateIv = () => {
+  return window.crypto.getRandomValues(new Uint8Array(12))
 }
 
 export const encrypt = async (data, key) => {
-  let message = JSON.stringify(data)
-  let encoded = getMessageEncoding(message);
 
-  iv = window.crypto.getRandomValues(new Uint8Array(12));
+  const encoded = encode(data)
+  const iv = generateIv()
 
-  let ciphertext = await SubtleCrypto.encrypt(
-    {
-      name: "AES-GCM",
-      iv: iv
-    },
+  const cipher = await window.crypto.subtle.encrypt(
+    { name: "AES-GCM", iv: iv }, 
     key,
     encoded
   );
 
-  let buffer = new Uint8Array(ciphertext, 0, 5);
-
   return { 
-    buffer,
-    ciphertext,
-    byte: ciphertext.byteLength
+    cipher,
+    iv
   }
 }
 
-export const decrypt = async (key, ciphertext) => {
-  let decrypted = await SubtleCrypto.decrypt(
-    {
-      name: "AES-GCM",
-      iv: iv
-    },
-    key,
-    ciphertext
-  );
-
-  let dec = new TextDecoder();
-
-  return dec.decode(decrypted);
+export const pack = (buffer) => {
+  return window.btoa(
+    String.fromCharCode.apply(null, new Uint8Array(buffer))
+  )
 }
 
+export const unpack = (packed) => {
+  const string = window.atob(packed)
+  const buffer = new ArrayBuffer(string.length)
+  const bufferView = new Uint8Array(buffer)
 
+  for(let i = 0; i < string.length; i++) {
+    bufferView[i] = string.charCodeAt(i)
+  }
+
+  return buffer
+}
+
+export const decrypt = async (cipher, key, iv) => {
+  const encoded = await window.crypto.subtle.decrypt({
+    name: 'AES-GCM',
+    iv,
+  }, key, cipher)
+
+  return decode(encoded)
+}

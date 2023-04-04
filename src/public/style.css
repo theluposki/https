@@ -71,4 +71,5 @@ html, body {
   padding: 10px;
   background-color: var(--dark);
   min-height: 100px;
+  overflow-x: auto;
 }
