@@ -38,17 +38,20 @@ html, body {
 .generateKey {
   display: flex;
   gap: 4px;
+  padding: 10px;
 }
 
 .importKey {
   display: flex;
   gap: 4px;
+  padding: 10px;
 }
 
 #text {
   flex: 1;
   resize: none;
   padding: 10px;
+  margin: 10px;
 }
 
 .containerBtns {
@@ -58,6 +61,12 @@ html, body {
   align-items: center;
   gap: 10px;
 
+}
+
+input[type=text] {
+  padding: 0 8px;
+  border: solid 1px var(--dark);
+  border-radius: 4px;
 }
 
 #enc, #dec, button {
