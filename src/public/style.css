@@ -83,6 +83,11 @@ input[type=text] {
   cursor: pointer;
 }
 
+button:active {
+  transition: all ease .2s;
+  opacity: .8;
+}
+
 .panelView {
   flex: 1;
   margin: 10px;

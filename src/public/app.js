@@ -37,11 +37,12 @@ async function init() {
   const impKey = async () => {
     const importedKeyText = document.getElementById("importedKey")
 
-    localStorage.setItem("key", importedKeyText)
-    
-    const newKey = JSON.parse(atob(importedKeyText))
-    const key = await window.crypto.subtle.importKey("jwk", newKey, "AES-GCM", true, ["encrypt", "decrypt"]);
-    CryptoKey = key
+    if(importedKeyText.value !== "") {
+      localStorage.setItem("key", importedKeyText.value)
+      const newKey = JSON.parse(atob(importedKeyText.value))
+      const key = await window.crypto.subtle.importKey("jwk", newKey, "AES-GCM", true, ["encrypt", "decrypt"]);
+      CryptoKey = key
+    }
   }
 
   document.getElementById("btnGeneratedKey").addEventListener("click", () => {
