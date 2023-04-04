@@ -35,6 +35,16 @@ html, body {
   overflow: hidden;
 }
 
+.generateKey {
+  display: flex;
+  gap: 4px;
+}
+
+.importKey {
+  display: flex;
+  gap: 4px;
+}
+
 #text {
   flex: 1;
   resize: none;
@@ -50,7 +60,7 @@ html, body {
 
 }
 
-#enc, #dec {
+#enc, #dec, button {
   flex: 1;
   height: 45px;
   padding: 8px 16px;

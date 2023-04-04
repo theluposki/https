@@ -7,28 +7,35 @@ let textEnc;
 
 async function init() {
   const key = await generateKey()
+
+  const exported = await window.crypto.subtle.exportKey("jwk", key)
+
   console.log(key)
+  console.log(exported)
+
+  //localStorage.setItem("key", JSON.stringify(exported))
+
+  const imported = await window.crypto.subtle.importKey("jwk", JSON.parse(localStorage.getItem("key")), "AES-GCM", true, ["encrypt", "decrypt"]);
+  console.log(imported)
+  
+
 
   
   document.getElementById("enc").addEventListener("click", async () => {
-    const { cipher, iv } = await encrypt(text.value, key)
-
-    const result = {
-      cipher: pack(cipher),
-      iv: pack(iv)
-    }
+    const result = await encrypt(text.value, imported)
 
     textEnc = result
 
     console.log(result)
-    panelView.innerHTML = `<pre>${JSON.stringify(result, null, 4)}</pre>`
+    panelView.innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`
   })
 
   document.getElementById("dec").addEventListener("click", async () => {
-    const final = await decrypt(unpack(textEnc.cipher), key, unpack(textEnc.iv))
+    console.log(textEnc)
+    const result = await decrypt("eyJjaXBoZXIiOiJFYmRNRC9vN1F1TkVETkxZcmdOUGdzTzZSZDdWIiwiaXYiOiIrY0FJSXhvcmpCRnpScDlPIn0=", imported)
 
-    console.log(final)
-    panelView.innerHTML = `<pre>${final}</pre>`
+    console.log(result)
+    panelView.innerHTML = `<pre>${result}</pre>`
   })
 
 }

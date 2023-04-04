@@ -32,10 +32,15 @@ export const encrypt = async (data, key) => {
     encoded
   );
 
-  return { 
-    cipher,
-    iv
-  }
+  
+  const obj = JSON.stringify({
+    cipher: pack(cipher),
+    iv: pack(iv)
+  })
+
+  const packed = btoa(obj)
+
+  return packed
 }
 
 export const pack = (buffer) => {
@@ -56,7 +61,14 @@ export const unpack = (packed) => {
   return buffer
 }
 
-export const decrypt = async (cipher, key, iv) => {
+export const decrypt = async (base64, key) => {
+  const fromStr = atob(base64)
+  const parseObj = JSON.parse(fromStr)
+  console.log(parseObj)
+  
+  const cipher = unpack(parseObj.cipher)
+  const iv = unpack(parseObj.iv)
+
   const encoded = await window.crypto.subtle.decrypt({
     name: 'AES-GCM',
     iv,
