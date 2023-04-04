@@ -11,11 +11,12 @@ async function init() {
   console.log(keyPair)
   
   document.getElementById("enc").addEventListener("click", async () => {
-    const { ciphertext } = await encrypt(text.value, keyPair)
+    const { ciphertext, buffer } = await encrypt(text.value, keyPair)
     
-    textEnc = ciphertext
+    textEnc =ciphertext
 
     console.log(textEnc)
+    console.log(buffer)
 
     panelView.innerHTML = textEnc // encrypted.ciphertext
   })
