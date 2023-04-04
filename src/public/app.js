@@ -7,9 +7,11 @@ let textEnc
 
 async function init() {
   const keyPair = await generateKey()
+
+  console.log(keyPair)
   
   document.getElementById("enc").addEventListener("click", async () => {
-    const { ciphertext } = await encrypt(text.value, keyPair.publicKey)
+    const { ciphertext } = await encrypt(text.value, keyPair)
     
     textEnc = ciphertext
 
@@ -25,7 +27,7 @@ async function init() {
   document.getElementById("dec").addEventListener("click", async () => {
     console.log(text.value)
 
-    const decrypted = await decrypt(keyPair.privateKey, textEnc)
+    const decrypted = await decrypt(keyPair, textEnc)
     
     console.log(decrypted)
 

@@ -1,11 +1,11 @@
 const SubtleCrypto = window.crypto.subtle
 
+let iv;
+
 export const generateKey = async () => {
   const algorithm = {
-    name: "RSA-OAEP",
-    modulusLength: 4096,
-    publicExponent: new Uint8Array([1, 0, 1]),
-    hash: "SHA-256",
+    name: "AES-GCM",
+    length: 256,
   }
 
   return await SubtleCrypto.generateKey(algorithm, true, ["encrypt", "decrypt"])
@@ -20,9 +20,12 @@ export const encrypt = async (data, key) => {
   let message = JSON.stringify(data)
   let encoded = getMessageEncoding(message);
 
+  iv = window.crypto.getRandomValues(new Uint8Array(12));
+
   let ciphertext = await SubtleCrypto.encrypt(
     {
-      name: "RSA-OAEP"
+      name: "AES-GCM",
+      iv: iv
     },
     key,
     encoded
@@ -40,7 +43,8 @@ export const encrypt = async (data, key) => {
 export const decrypt = async (key, ciphertext) => {
   let decrypted = await SubtleCrypto.decrypt(
     {
-      name: "RSA-OAEP"
+      name: "AES-GCM",
+      iv: iv
     },
     key,
     ciphertext
