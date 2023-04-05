@@ -6,7 +6,13 @@
 
 :root {
   --dark: #212121;
+  --dark2: #272727;
+  --dark3: #323232;
+
+  --silver: #ddd;
+
   --white: #f4f4f4;
+  --green: #005e34;
 }
 
 
@@ -15,85 +21,33 @@ html, body {
   min-height: 100vh;
 
   background-color: var(--dark);
-  color: var(--white);
+  color: var(--silver);
 
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+#app {
+  flex: 1;
+  width: 100%;
+  max-width: 1024px;
+  min-height: 100vh;
+  background-color: var(--dark2);
+
+  display: flex;
   flex-direction: column;
-  gap: 20px;
 }
 
-.container {
-  width: 400px;
-  height: 400px;
-  background-color: #323232;
-
-  display: flex;
-  flex-direction: column;
-  border-radius: 4px;
-  overflow: hidden;
+.header {
+  min-height: 45px;
 }
 
-.generateKey {
-  display: flex;
-  gap: 4px;
-  padding: 10px;
-}
-
-.importKey {
-  display: flex;
-  gap: 4px;
-  padding: 10px;
-}
-
-#text {
+.main {
   flex: 1;
-  resize: none;
-  padding: 10px;
-  margin: 10px;
 }
 
-.containerBtns {
-  min-height: 60px;
-  padding: 0 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
+.footer {
+  min-height: 45px;
 }
 
-input[type=text] {
-  padding: 0 8px;
-  border: solid 1px var(--dark);
-  border-radius: 4px;
-}
-
-#enc, #dec, button {
-  flex: 1;
-  height: 45px;
-  padding: 8px 16px;
-  font-weight: bold;
-  border-radius: 4px;
-
-  background-color: #005e34;
-  border: solid 1px var(--dark);
-  color: var(--white);
-
-  cursor: pointer;
-}
-
-button:active {
-  transition: all ease ;
-  opacity: .8;
-}
-
-.panelView {
-  flex: 1;
-  margin: 10px;
-  border-radius: 4px;
-  padding: 10px;
-  background-color: var(--dark);
-  min-height: 100px;
-  overflow-x: auto;
-}
