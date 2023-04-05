@@ -84,7 +84,7 @@ input[type=text] {
 }
 
 button:active {
-  transition: all ease .2s;
+  transition: all ease ;
   opacity: .8;
 }
 

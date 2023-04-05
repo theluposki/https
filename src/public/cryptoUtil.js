@@ -3,8 +3,28 @@ export const generateKey = async () => {
     name: "AES-GCM",
     length: 256,
   }
-
   return await window.crypto.subtle.generateKey(algorithm, true, ["encrypt", "decrypt"])
+}
+
+export const exportKey = async (key) => {
+  if(key) {
+    const exported = await window.crypto.subtle.exportKey("jwk", key)
+    const exportedJSON = JSON.stringify(exported)
+    const exportedBase64 = btoa(exportedJSON)
+    return exportedBase64
+  }
+  
+  const exported = await window.crypto.subtle.exportKey("jwk", await generateKey())
+  const exportedJSON = JSON.stringify(exported)
+  const exportedBase64 = btoa(exportedJSON)
+  return exportedBase64
+}
+
+export const importKey = async (key) => {
+  const convertBase64toJson = atob(key)
+  const convertJsontoObject = JSON.parse(convertBase64toJson)
+
+  return await window.crypto.subtle.importKey("jwk", convertJsontoObject, "AES-GCM", true, ["encrypt", "decrypt"]);
 }
 
 const encode = (data) => {

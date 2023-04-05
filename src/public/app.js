@@ -1,4 +1,4 @@
-import { generateKey, encrypt, decrypt } from "./cryptoUtil.js"
+import { encrypt, decrypt, exportKey, importKey} from "./cryptoUtil.js"
 
 const panelView = document.querySelector(".panelView")
 const text = document.getElementById("text")
@@ -11,46 +11,13 @@ async function init() {
 
   let CryptoKey;
 
-  const genKey = async () => {
-    const key = await generateKey()
-    const exported = await window.crypto.subtle.exportKey("jwk", key)
-    
-    CryptoKey = key
-
-    localStorage.setItem("key", btoa(JSON.stringify(exported)))
-    generatedKeyText.value = btoa(JSON.stringify(exported)) 
-  }
-
-  
-  const getCurrentKey = async () => {
-    if(localStorage.getItem("key")) {
-      const currentKey = JSON.parse(atob(localStorage.getItem("key")))
-      return await window.crypto.subtle.importKey("jwk", currentKey, "AES-GCM", true, ["encrypt", "decrypt"]);
-    }
-    return await genKey()
-  }
-
-  CryptoKey = await getCurrentKey();
-
-  console.log(await getCurrentKey())
-
-  const impKey = async () => {
-    const importedKeyText = document.getElementById("importedKey")
-
-    if(importedKeyText.value !== "") {
-      localStorage.setItem("key", importedKeyText.value)
-      const newKey = JSON.parse(atob(importedKeyText.value))
-      const key = await window.crypto.subtle.importKey("jwk", newKey, "AES-GCM", true, ["encrypt", "decrypt"]);
-      CryptoKey = key
-    }
-  }
-
-  document.getElementById("btnGeneratedKey").addEventListener("click", () => {
-    genKey()
+  document.getElementById("btnGeneratedKey").addEventListener("click", async () => {
+    console.log(await exportKey())
   })
 
-  document.getElementById("btnImportedKey").addEventListener("click", () => {
-    impKey()
+  document.getElementById("btnImportedKey").addEventListener("click", async () => {
+    const chave = "eyJhbGciOiJBMjU2R0NNIiwiZXh0Ijp0cnVlLCJrIjoiOWcyajV4RzRiSzhQV0hacm9vS2RfQTE3d3RmdFhFRGxnXzdhVlZHU0Z5YyIsImtleV9vcHMiOlsiZW5jcnlwdCIsImRlY3J5cHQiXSwia3R5Ijoib2N0In0="
+    console.log(await importKey(chave))
   })
 
   //localStorage.setItem("key", JSON.stringify(exported))
