@@ -29,7 +29,17 @@
       <textarea name="text" id="text" placeholder="digite ou cole seu texto"></textarea>
     </main>
     <footer class="footer">
-      <div>version: 1.0.0</div>
+      <div class="textCopy">
+        <button class="btn btn-rounded" id="copyMyText">
+          <i class='bx bx-copy-alt' style='color:#f4f4f4' ></i>
+       </button>
+
+       <button class="btn btn-rounded" id="pasteMyText">
+        <i class='bx bx-paste' style='color:#f4f4f4' ></i>
+       </button>
+
+        <p id="msgCopyMyText"></p>
+      </div>
       <div class="options">
         <button class="btn" id="encText">
           Encrypt

@@ -110,6 +110,28 @@ importKeyBtn.addEventListener("click", async () => {
 
 const text = document.getElementById("text")
 
+const copyMyText = document.getElementById("copyMyText")
+const pasteMyText = document.getElementById("pasteMyText")
+
+copyMyText.addEventListener("click", () => {
+  const msgCopyMyText = document.getElementById("msgCopyMyText")
+
+  const copyText = text
+
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(copyText.value);
+
+  msgCopyMyText.innerHTML = "Copiado."
+
+  setTimeout(() => msgCopyMyText.innerHTML = "", 3000)
+
+})
+
+pasteMyText.addEventListener("click", async () => {
+  text.value = await navigator.clipboard.readText();
+})
+
 const encText = document.getElementById("encText")
 const decText = document.getElementById("decText")
 
