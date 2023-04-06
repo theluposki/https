@@ -84,8 +84,7 @@ export const unpack = (packed) => {
 export const decrypt = async (base64, key) => {
   const fromStr = atob(base64)
   const parseObj = JSON.parse(fromStr)
-  console.log(parseObj)
-  
+
   const cipher = unpack(parseObj.cipher)
   const iv = unpack(parseObj.iv)
 

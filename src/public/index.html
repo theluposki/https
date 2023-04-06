@@ -6,17 +6,99 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <title>HTTPS</title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
   <div id="app">
     <header class="header">
-      Header
+      <div class="logo">
+        <i class='bx bx-git-merge' style='color:#f4f4f4'  ></i>
+        <span>MyReb</span>
+      </div>
+
+      <div class="options">
+        <button class="btn btn-rounded btnModalMyKey">
+          <i class='bx bx-key' style='color:#f4f4f4' ></i>
+        </button>
+        <button class="btn btn-rounded btnModalNkey">
+          <i class='bx bxs-key' style='color:#f4f4f4'  ></i>
+        </button>
+      </div>
     </header>
     <main class="main">
-      Main
+      <textarea name="text" id="text" placeholder="digite ou cole seu texto"></textarea>
     </main>
-    <footer class="footer">Footer</footer>
+    <footer class="footer">
+      <div>version: 1.0.0</div>
+      <div class="options">
+        <button class="btn" id="encText">
+          Encrypt
+        </button>
+        <button class="btn" id="decText">
+          Decrypt
+        </button>
+      </div>
+    </footer>
+
+    <dialog id="dialogModalNkey">
+      <button class="btn btn-rounded close btnCloseModalNkey">
+        <i class='bx bx-x' style='color:#f4f4f4'  ></i>
+      </button>
+      <div class="wrapper">
+        <h3>Adicionar Chave</h3>
+        <div class="container-modal">
+
+          <p>Gerar uma nova chave</p>
+
+          <div class="genKeyOptions">
+           <button class="btn btn-rounded" id="copyMykeyGen">
+              <i class='bx bx-copy-alt' style='color:#f4f4f4' ></i>
+           </button>
+           <input type="text" class="input mykeyGen" placeholder="Chave" />
+            <button class="btn" id="btnGenerate">Gerar</button>
+          </div>
+          <p id="msgCopyMykeyGen"></p>
+
+          <p>Ou importar uma chave</p>
+
+          <div class="impKeyOptions">
+            <button class="btn btn-rounded" id="copyImportKeyInput">
+              <i class='bx bx-copy-alt' style='color:#f4f4f4' ></i>
+           </button>
+            <input type="text" id="importKeyInput" class="input" placeholder="sua chave aparecera aqui.">
+            
+           <button class="btn btn-rounded" id="pasteImportKeyInput">
+            <i class='bx bx-paste' style='color:#f4f4f4' ></i>
+           </button>
+          </div>
+
+          <p id="msgCopyimportKeyInput"></p>
+          
+          <button class="btn" id="importKeyBtn">Importar</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="dialogModalMyKey">
+      <button class="btn btn-rounded close btnCloseModalMyKey">
+        <i class='bx bx-x' style='color:#f4f4f4'  ></i>
+      </button>
+      <div class="wrapper">
+        <h3>Exportar a Chave</h3>
+        <div class="container-modal">
+          <div class="myKeyOptions">
+            <button class="btn btn-rounded" id="copyMykeyLocal">
+              <i class='bx bx-copy-alt' style='color:#f4f4f4' ></i>
+           </button>
+           <input type="text" id="mykeyLocal" class="input" placeholder="Sua Chave"/>
+          </div>
+          <p id="msgCopyMykeyLocal"></p>
+        </div>
+      </div>
+    </dialog>
+
   </div>
-  <!-- <script src="app.js" type="module"></script> -->
+
+  <script src="app.js" type="module"></script>
 </body>
 </html>

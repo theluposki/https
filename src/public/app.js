@@ -1,44 +1,136 @@
-import { encrypt, decrypt, exportKey, importKey} from "./cryptoUtil.js"
+import { importKey, generateKey, exportKey, encrypt, decrypt } from "./cryptoUtil.js"
 
-const panelView = document.querySelector(".panelView")
-const text = document.getElementById("text")
-panelView.innerHTML = "Saida"
-const generatedKeyText = document.getElementById("generatedKey")
+const btnModalNkey = document.querySelector('.btnModalNkey')
+const btnCloseModalNkey = document.querySelector(".btnCloseModalNkey")
+const dialogModalNkey = document.getElementById("dialogModalNkey")
 
-let textEnc;
+const btnModalMyKey = document.querySelector('.btnModalMyKey')
+const btnCloseModalMyKey = document.querySelector(".btnCloseModalMyKey")
+const dialogModalMyKey = document.getElementById("dialogModalMyKey")
 
-async function init() {
+btnModalNkey.addEventListener("click", () => dialogModalNkey.showModal())
+btnCloseModalNkey.addEventListener("click", () => dialogModalNkey.close())
 
-  let CryptoKey;
+btnModalMyKey.addEventListener("click", () => dialogModalMyKey.showModal())
+btnCloseModalMyKey.addEventListener("click", () => dialogModalMyKey.close())
 
-  document.getElementById("btnGeneratedKey").addEventListener("click", async () => {
-    console.log(await exportKey())
-  })
+let keyGlobal;
 
-  document.getElementById("btnImportedKey").addEventListener("click", async () => {
-    const chave = "eyJhbGciOiJBMjU2R0NNIiwiZXh0Ijp0cnVlLCJrIjoiOWcyajV4RzRiSzhQV0hacm9vS2RfQTE3d3RmdFhFRGxnXzdhVlZHU0Z5YyIsImtleV9vcHMiOlsiZW5jcnlwdCIsImRlY3J5cHQiXSwia3R5Ijoib2N0In0="
-    console.log(await importKey(chave))
-  })
+const mykeyLocal = document.getElementById("mykeyLocal")
 
-  //localStorage.setItem("key", JSON.stringify(exported))
-
-  document.getElementById("enc").addEventListener("click", async () => {
-    const result = await encrypt(text.value, await CryptoKey)
-
-    textEnc = result
-
-    console.log(result)
-    panelView.innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`
-  })
-
-  document.getElementById("dec").addEventListener("click", async () => {
-    console.log(textEnc)
-    const result = await decrypt(textEnc, await CryptoKey)
-
-    console.log(result)
-    panelView.innerHTML = `<pre>${result}</pre>`
-  })
-
+const checkIfYouKey = async () => {
+  if(localStorage.getItem("key")) {
+    keyGlobal = await importKey(localStorage.getItem("key"))
+    mykeyLocal.value = localStorage.getItem("key")
+  }
 }
 
-init()
+checkIfYouKey()
+
+const copyMykeyLocal = document.getElementById("copyMykeyLocal")
+
+copyMykeyLocal.addEventListener("click", () => {
+  const msgCopyMykeyLocal = document.getElementById("msgCopyMykeyLocal")
+  const copyText = mykeyLocal
+
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(copyText.value);
+
+  msgCopyMykeyLocal.innerHTML = "Copiado."
+})
+
+const copyImportKeyInput = document.getElementById("copyImportKeyInput")
+
+copyImportKeyInput.addEventListener("click", () => {
+  const msgCopyimportKeyInput = document.getElementById("msgCopyimportKeyInput")
+  const importKeyInput = document.getElementById("importKeyInput")
+
+  const copyText = importKeyInput
+
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(copyText.value);
+
+  msgCopyimportKeyInput.innerHTML = "Copiado."
+})
+
+
+const copyMykeyGen = document.getElementById("copyMykeyGen")
+
+copyMykeyGen.addEventListener("click", () => {
+  const mykeyGen = document.querySelector(".mykeyGen")
+  const msgCopyMykeyGen = document.getElementById("msgCopyMykeyGen")
+  
+  const copyText = mykeyGen
+
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(copyText.value);
+
+  msgCopyMykeyGen.innerHTML = "Copiado."
+})
+
+const btnGenerate = document.getElementById("btnGenerate")
+const mykeyGen = document.querySelector(".mykeyGen")
+
+btnGenerate.addEventListener("click", async () => {
+
+  const generatedKey =  await generateKey()
+  keyGlobal = generatedKey
+
+  const exportedKeyBase64 = await exportKey(generatedKey)
+
+  mykeyGen.value = exportedKeyBase64
+
+  localStorage.setItem("key", exportedKeyBase64)
+})
+
+const importKeyInput = document.getElementById("importKeyInput")
+const importKeyBtn = document.getElementById("importKeyBtn")
+
+
+const pasteImportKeyInput = document.getElementById("pasteImportKeyInput")
+
+pasteImportKeyInput.addEventListener("click", async () => {
+  importKeyInput.value = await navigator.clipboard.readText();
+})
+
+importKeyBtn.addEventListener("click", async () => {
+  const input = importKeyInput.value
+
+  if(input) {
+    const importedkey = await importKey(input)
+
+    keyGlobal = importedkey
+    localStorage.setItem("key", await exportKey(importedkey))
+  }
+})
+
+
+const text = document.getElementById("text")
+
+const encText = document.getElementById("encText")
+const decText = document.getElementById("decText")
+
+
+encText.addEventListener("click", async () => {
+  const currentText = text.value
+
+  if(currentText) {
+    const encrypted = await encrypt(currentText, keyGlobal)
+
+    text.value = encrypted
+  }
+})
+
+decText.addEventListener("click", async () => {
+  const currentText = text.value
+
+  if(currentText) {
+    const decrypted = await decrypt(currentText, keyGlobal)
+
+    text.value = decrypted
+  }
+})
+
