@@ -35,7 +35,7 @@ html, body {
   flex: 1;
   width: 100%;
   max-width: 1024px;
-  min-height: 90vh;
+  min-height: 80vh;
   background-color: var(--dark2);
 
   display: flex;
