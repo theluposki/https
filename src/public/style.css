@@ -24,6 +24,10 @@ html, body {
   font-family: sans-serif;
 
   background-color: var(--dark);
+  background-image: url("./code.jpg");
+  background-position: center center;
+  background-size: cover;
+
   color: var(--silver);
 
   display: flex;
@@ -238,5 +242,6 @@ dialog > .wrapper {
   padding: 10px;
   border: none;
   outline: none;
+  caret-color: #7c179a;
 }
 

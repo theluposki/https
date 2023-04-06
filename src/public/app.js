@@ -57,10 +57,10 @@ copyImportKeyInput.addEventListener("click", () => {
 
 
 const copyMykeyGen = document.getElementById("copyMykeyGen")
+const msgCopyMykeyGen = document.getElementById("msgCopyMykeyGen")
 
 copyMykeyGen.addEventListener("click", () => {
   const mykeyGen = document.querySelector(".mykeyGen")
-  const msgCopyMykeyGen = document.getElementById("msgCopyMykeyGen")
   
   const copyText = mykeyGen
 
@@ -104,6 +104,7 @@ importKeyBtn.addEventListener("click", async () => {
 
     keyGlobal = importedkey
     localStorage.setItem("key", await exportKey(importedkey))
+    msgCopyMykeyGen.innerHTML = "Chave importada"
   }
 })
 
