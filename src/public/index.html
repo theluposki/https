@@ -17,6 +17,15 @@
         <span>MyReb</span>
       </div>
 
+      <div class="TextOrChat">
+        <button class="btn btn-rounded btnViewText">
+          <i class='bx bx-text' style='color:#f4f4f4' ></i>
+        </button>
+        <button class="btn btn-rounded btnViewChat">
+          <i class='bx bx-conversation' style='color:#f4f4f4'  ></i>
+        </button>
+      </div>
+
       <div class="options">
         <button class="btn btn-rounded btnModalMyKey">
           <i class='bx bx-key' style='color:#f4f4f4' ></i>
@@ -25,10 +34,28 @@
           <i class='bx bxs-key' style='color:#f4f4f4'  ></i>
         </button>
       </div>
+
+      <div class="optionsChat">
+        <button class="btn btn-rounded btnModalAddFriend">
+          <i class='bx bxs-user-plus' style='color:#f4f4f4'  ></i>
+        </button>
+        <button class="btn btn-rounded btnViewListFriend">
+          <i class='bx bxs-user-detail' style='color:#f4f4f4'  ></i>
+        </button>
+      </div>
     </header>
+
     <main class="main">
-      <textarea name="text" id="text" placeholder="digite ou cole seu texto"></textarea>
+      <textarea  name="text" id="text" placeholder="digite ou cole seu texto"></textarea>
+      <div class="containerMessagesChat">
+        messages
+      </div>
+      <div class="contactsView">
+        Contacts
+      </div>
     </main>
+
+
     <footer class="footer">
       <div class="textCopy">
         <button class="btn btn-rounded" id="copyMyText">
@@ -49,6 +76,10 @@
           Decrypt
         </button>
       </div>
+    </footer>
+
+    <footer class="footerChat">
+      Footer
     </footer>
 
     <dialog id="dialogModalNkey">

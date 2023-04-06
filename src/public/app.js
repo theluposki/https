@@ -1,5 +1,99 @@
+import "/socket.io/socket.io.js"
 import { importKey, generateKey, exportKey, encrypt, decrypt } from "./cryptoUtil.js"
 
+const server = io()
+
+server.on("user_connected", (username) => {
+  console.log("user_connected: ", username)
+})
+
+let myUser;
+
+if(localStorage.getItem("myUser")) { 
+  server.emit("user_connected", localStorage.getItem("myUser"))
+} else {
+  myUser = window.crypto.randomUUID()
+  localStorage.setItem("myUser", myUser)
+  server.emit("user_connected", myUser)
+}
+
+let chat = false
+
+const text = document.getElementById("text")
+const footerChat = document.querySelector(".footerChat")
+const footer = document.querySelector(".footer")
+const containerMessagesChat = document.querySelector(".containerMessagesChat")
+const options = document.querySelector(".options")
+const optionsChat = document.querySelector(".optionsChat")
+const contactsView = document.querySelector(".contactsView")
+
+const btnViewText = document.querySelector(".btnViewText")
+const btnViewChat = document.querySelector(".btnViewChat")
+
+const btnViewListFriend = document.querySelector(".btnViewListFriend")
+
+btnViewListFriend.addEventListener("click", () => {
+  const styled = window.getComputedStyle(contactsView)
+  if(styled["display"] === "none") {
+    contactsView.style.display = "flex"
+  } else {
+    contactsView.style.display = "none"
+  }
+})
+
+btnViewText.addEventListener("click", () => {
+  chat = false
+
+  text.style.display = "block"
+  footer.style.display = "flex"
+  options.style.display = "flex"
+
+  
+  optionsChat.style.display = "none"
+  footerChat.style.display = "none"
+  containerMessagesChat.style.display = "none"
+  contactsView.style.display = "none"
+})
+
+btnViewChat.addEventListener("click", () => {
+  chat = true
+
+  text.style.display = "none"
+  footer.style.display = "none"
+  options.style.display = "none"
+
+  containerMessagesChat.style.display = "flex"
+  footerChat.style.display = "flex"
+  optionsChat.style.display = "flex"
+  contactsView.style.display = "none"
+})
+
+if(chat) {
+  text.style.display = "none"
+  footer.style.display = "none"
+  options.style.display = "none"
+
+  containerMessagesChat.style.display = "flex"
+  footerChat.style.display = "flex"
+  contactsView.style.display = "none"
+} else {
+  text.style.display = "block"
+  footer.style.display = "flex"
+  options.style.display = "flex"
+
+  
+  optionsChat.style.display = "none"
+  footerChat.style.display = "none"
+  containerMessagesChat.style.display = "none"
+  contactsView.style.display = "none"
+}
+
+
+
+
+
+
+/** Socket */
 const btnModalNkey = document.querySelector('.btnModalNkey')
 const btnCloseModalNkey = document.querySelector(".btnCloseModalNkey")
 const dialogModalNkey = document.getElementById("dialogModalNkey")
@@ -109,7 +203,6 @@ importKeyBtn.addEventListener("click", async () => {
 })
 
 
-const text = document.getElementById("text")
 
 const copyMyText = document.getElementById("copyMyText")
 const pasteMyText = document.getElementById("pasteMyText")
