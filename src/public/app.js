@@ -8,6 +8,8 @@ server.on("user_connected", (username) => {
 })
 
 let myUser;
+let Friends = [];
+let currentChat;
 
 if(localStorage.getItem("myUser")) { 
   server.emit("user_connected", localStorage.getItem("myUser"))
@@ -15,6 +17,42 @@ if(localStorage.getItem("myUser")) {
   myUser = window.crypto.randomUUID()
   localStorage.setItem("myUser", myUser)
   server.emit("user_connected", myUser)
+}
+
+const currentChatSpan = document.getElementById("currentChatSpan")
+
+const listContacts = document.querySelector(".listContacts")
+
+const selectCurrentChat = (id) => {
+  currentChat = id
+  currentChatSpan.innerHTML = id
+}
+
+document.body.addEventListener("click", function (evt) {
+  evt.preventDefault()
+
+  const target = evt.target.getAttribute("data-id")
+
+  if(target) {
+    selectCurrentChat(target)
+  }
+})
+
+if(localStorage.getItem("myFriends")) { 
+  Friends = JSON.parse(localStorage.getItem("myFriends"))
+  
+  
+  Friends.forEach(i => {
+    listContacts.innerHTML += `
+        <li class="li" data-id="${i}">
+          ${i}
+        </li>
+      `
+  })
+
+} else {
+  Friends = []
+  localStorage.setItem("myFriends", JSON.stringify(Friends))
 }
 
 let chat = false
@@ -75,6 +113,7 @@ if(chat) {
 
   containerMessagesChat.style.display = "flex"
   footerChat.style.display = "flex"
+  optionsChat.style.display = "flex"
   contactsView.style.display = "none"
 } else {
   text.style.display = "block"
@@ -97,13 +136,21 @@ if(chat) {
 const btnModalNkey = document.querySelector('.btnModalNkey')
 const btnCloseModalNkey = document.querySelector(".btnCloseModalNkey")
 const dialogModalNkey = document.getElementById("dialogModalNkey")
+const dialogModalAddFriend = document.getElementById("dialogModalAddFriend")
+const btnCloseModalAddFriend = document.querySelector(".btnCloseModalAddFriend")
 
 const btnModalMyKey = document.querySelector('.btnModalMyKey')
 const btnCloseModalMyKey = document.querySelector(".btnCloseModalMyKey")
 const dialogModalMyKey = document.getElementById("dialogModalMyKey")
+const btnModalAddFriend = document.querySelector(".btnModalAddFriend")
+
+const pasteKeyMyFriend = document.getElementById("pasteKeyMyFriend")
 
 btnModalNkey.addEventListener("click", () => dialogModalNkey.showModal())
 btnCloseModalNkey.addEventListener("click", () => dialogModalNkey.close())
+
+btnModalAddFriend.addEventListener("click", () => dialogModalAddFriend.showModal())
+btnCloseModalAddFriend.addEventListener("click", () => dialogModalAddFriend.close())
 
 btnModalMyKey.addEventListener("click", () => dialogModalMyKey.showModal())
 btnCloseModalMyKey.addEventListener("click", () => dialogModalMyKey.close())
@@ -183,11 +230,40 @@ btnGenerate.addEventListener("click", async () => {
 const importKeyInput = document.getElementById("importKeyInput")
 const importKeyBtn = document.getElementById("importKeyBtn")
 
+const AddFriendLocal = document.getElementById("AddFriendLocal")
 
 const pasteImportKeyInput = document.getElementById("pasteImportKeyInput")
 
 pasteImportKeyInput.addEventListener("click", async () => {
   importKeyInput.value = await navigator.clipboard.readText();
+})
+
+pasteKeyMyFriend.addEventListener("click", async () => {
+  AddFriendLocal.value = await navigator.clipboard.readText();
+})
+
+const btnAddFriend = document.getElementById("btnAddFriend")
+
+const msgCopyAddFriendLocal = document.getElementById("msgCopyAddFriendLocal")
+
+btnAddFriend.addEventListener("click", () => {
+  if(AddFriendLocal.value !== "" && !Friends.includes(AddFriendLocal.value)) {
+    Friends.push(AddFriendLocal.value)
+    localStorage.setItem("myFriends", JSON.stringify(Friends))
+    
+    listContacts.innerHTML = ""
+
+    Friends.forEach(i => {
+      listContacts.innerHTML += `
+        <li class="li" onclick="funSelectFriend('${i}')">
+          ${i}
+        </li>
+      `
+    })
+
+    msgCopyAddFriendLocal.innerHTML = AddFriendLocal.value
+  }
+  
 })
 
 importKeyBtn.addEventListener("click", async () => {

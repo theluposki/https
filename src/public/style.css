@@ -58,11 +58,41 @@ html, body {
 }
 
 .contactsView {
+  display: none;
+  flex-direction: column;
   min-width: 260px;
 }
 
-.optionsChat {
+.li {
+  height: 60px;
+  font-size: 14px;
+
   display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+
+  user-select: none;
+  cursor: pointer;
+  background-color: var(--dark3);
+
+}
+
+.searchInput {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.searchContacts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+
+.optionsChat {
+  display: none;
   align-items: center;
   gap: 4px;
 }
@@ -80,12 +110,30 @@ html, body {
 }
 
 .containerMessagesChat {
-  background-color: var(--white);
+  position: relative;
+  background-color: white;
   flex: 1;
   resize: none;
-  padding: 10px;
+  padding: 25px 10px 10px 10px;
+
   border: none;
   outline: none;
+}
+
+#currentChatSpan {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  max-width: 260px;
+  font-size: 10px;
+  background-color: #272727;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-weight: bold;
+  user-select: none;
 }
 
 .footer {
@@ -106,6 +154,7 @@ html, body {
   display: none;
   justify-content: space-between;
   align-items: center;
+  gap: 4px;
 
   padding: 0 16px;
 }
@@ -138,9 +187,15 @@ dialog {
   padding: 16px;
 }
 
+.AddFriendOptions {
+  display: flex;
+  gap: 10px;
+}
+
 .container-modal {
   display: flex;
   flex-direction: column;
+  gap: 10px;
 }
 
 .container-modal p {
@@ -224,8 +279,9 @@ dialog > .wrapper {
   background-color: var(--dark);
   color: var(--silver);
   font-weight: bold;
-  padding: 8px 16px;
+  padding: 4px 16px;
   border-radius: 4px;
+  min-height: 30px;
 
   display: flex;
   justify-content: center;

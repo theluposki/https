@@ -44,14 +44,30 @@
         </button>
       </div>
     </header>
-
+    
     <main class="main">
       <textarea  name="text" id="text" placeholder="digite ou cole seu texto"></textarea>
       <div class="containerMessagesChat">
-        messages
+        <span id="currentChatSpan"></span>
+        Mensagens aqui
       </div>
       <div class="contactsView">
-        Contacts
+        <div class="searchContacts">
+          <div class="searchOptions">
+            btns
+          </div>
+          <div class="searchInput">
+            <input type="text" class="input" placeholder="pesquise">
+            <button class="btn">
+              <i class='bx bx-search-alt-2' style='color:#f4f4f4'  ></i>
+            </button>
+          </div>
+        </div>
+
+        <ul class="listContacts">
+          
+        </ul>
+
       </div>
     </main>
 
@@ -79,7 +95,15 @@
     </footer>
 
     <footer class="footerChat">
-      Footer
+      <div class="optionsFooterChat">
+        <button class="btn btn-rounded">
+          <i class='bx bx-dots-vertical-rounded'></i>
+        </button>
+      </div>
+      <input type="text" class="input" placeholder="escreva aqui.">
+      <button class="btn">
+        <i class='bx bx-send' style='color:#f4f4f4' ></i>
+      </button>
     </footer>
 
     <dialog id="dialogModalNkey">
@@ -136,6 +160,27 @@
           </div>
           <p id="msgCopyMykeyLocal"></p>
         </div>
+      </div>
+    </dialog>
+
+    <dialog id="dialogModalAddFriend">
+      <button class="btn btn-rounded close btnCloseModalAddFriend">
+        <i class='bx bx-x' style='color:#f4f4f4'  ></i>
+      </button>
+      <div class="wrapper">
+        <h3>Adicionar Amigo</h3>
+
+        <div class="container-modal">
+          <div class="AddFriendOptions">
+           <input type="text" id="AddFriendLocal" class="input" placeholder="Sua Chave"/>
+           <button class="btn btn-rounded" id="pasteKeyMyFriend">
+            <i class='bx bx-paste' style='color:#f4f4f4' ></i>
+           </button>
+          </div>
+          <button class="btn" id="btnAddFriend">Adicionar</button>
+          <p id="msgCopyAddFriendLocal"></p>
+        </div>
+
       </div>
     </dialog>
 
