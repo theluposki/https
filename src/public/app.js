@@ -7,12 +7,24 @@ server.on("user_connected", (username) => {
   console.log("user_connected: ", username)
 })
 
+const containerMessagesChat = document.querySelector(".containerMessagesChat")
+
+server.on("new_message", (msg) => {
+  containerMessagesChat.innerHTML += `
+  <div class="boxMessage receiver">
+    <span>${msg.sender}</span>
+    <h4>${msg.message}</h4>
+  </div>
+  `
+})
+
 let myUser;
 let Friends = [];
 let currentChat;
 
 if(localStorage.getItem("myUser")) { 
   server.emit("user_connected", localStorage.getItem("myUser"))
+  myUser = localStorage.getItem("myUser")
 } else {
   myUser = window.crypto.randomUUID()
   localStorage.setItem("myUser", myUser)
@@ -60,7 +72,6 @@ let chat = false
 const text = document.getElementById("text")
 const footerChat = document.querySelector(".footerChat")
 const footer = document.querySelector(".footer")
-const containerMessagesChat = document.querySelector(".containerMessagesChat")
 const options = document.querySelector(".options")
 const optionsChat = document.querySelector(".optionsChat")
 const contactsView = document.querySelector(".contactsView")
@@ -326,3 +337,29 @@ decText.addEventListener("click", async () => {
   }
 })
 
+const inputChat = document.getElementById("inputChat")
+
+const sendMessage = document.getElementById("sendMessage")
+
+sendMessage.addEventListener("click", () => {
+  if(inputChat.value !== "") {
+    console.log(myUser)
+    const msg = {
+      sender: myUser,
+      receiver: currentChat,
+      message: inputChat.value
+    }
+    
+    
+    server.emit("send_message", msg)
+
+    console.log(msg)
+
+    containerMessagesChat.innerHTML += `
+      <div class="boxMessage sender">
+        <span>${msg.sender}</span>
+        <h4>${msg.message}</h4>
+      </div>
+    `
+  }
+})
