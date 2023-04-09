@@ -26,7 +26,7 @@ html, body {
   background-color: var(--dark);
   background-image: url("./code.jpg");
   background-position: center center;
-  background-size: cover;
+  background-size: 90%;
 
   color: var(--silver);
 
@@ -61,6 +61,7 @@ html, body {
   display: none;
   flex-direction: column;
   min-width: 260px;
+  background-color: var(--dark);
 }
 
 .li {
@@ -111,7 +112,7 @@ html, body {
 
 .containerMessagesChat {
   position: relative;
-  background-color: white;
+  background-color: var(--dark2);
   flex: 1;
   resize: none;
   padding: 25px 10px 10px 10px;
@@ -173,20 +174,26 @@ html, body {
   color: var(--silver);
 }
 
-.boxMessage h4 {
+.boxMessage h6 {
   margin-top: 10px;
   color: var(--white);
 }
 
+.optionsFooterChat {
+  display: flex;
+  align-items: center;
+  margin-right: 4px;
+}
+
 #currentChatSpan {
   position: absolute;
-  top: 16px;
+  top: 26px;
   left: 50%;
   transform: translate(-50%, -50%);
   
-  max-width: 260px;
+  width: fit-content;
   font-size: 10px;
-  background-color: #272727;
+  background-color: var(--dark3);
   color: white;
   padding: 4px 10px;
   border-radius: 4px;
@@ -238,6 +245,9 @@ dialog {
   position: relative;
   border: none;
   border-radius: 4px;
+  background-color: var(--dark2);
+  color: var(--silver);
+
   box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
   -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
   -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
@@ -326,8 +336,9 @@ dialog > .wrapper {
 .input {
   flex: 1;
   min-height: 30px;
-  border: solid 1px var(--dark);
-  color: var(--dark);
+  background-color: var(--dark);
+  border: solid 1px var(--dark3);
+  color: var(--silver);
   border-radius: 4px;
   padding: 0 10px;
 }
@@ -346,6 +357,7 @@ dialog > .wrapper {
   align-items: center;
 
   cursor: pointer;
+  user-select: none;
 }
 
 .btn:hover {
@@ -393,5 +405,7 @@ dialog > .wrapper {
   border: none;
   outline: none;
   caret-color: #7c179a;
+  background-color: var(--dark2);
+  color: var(--silver);
 }
 

@@ -13,7 +13,7 @@ server.on("new_message", (msg) => {
   containerMessagesChat.innerHTML += `
   <div class="boxMessage receiver">
     <span>${msg.sender}</span>
-    <h4>${msg.message}</h4>
+    <h5>${msg.message}</h5>
   </div>
   `
 })
@@ -358,7 +358,7 @@ sendMessage.addEventListener("click", () => {
     containerMessagesChat.innerHTML += `
       <div class="boxMessage sender">
         <span>${msg.sender}</span>
-        <h4>${msg.message}</h4>
+        <h5>${msg.message}</h5>
       </div>
     `
   }
