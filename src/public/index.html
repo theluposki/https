@@ -18,7 +18,7 @@
       </div>
 
       <div class="TextOrChat">
-        <button class="btn btn-rounded btnViewText">
+        <button class="btn btn-rounded btnViewText btnViewActive">
           <i class='bx bx-text' style='color:#f4f4f4' ></i>
         </button>
         <button class="btn btn-rounded btnViewChat">
@@ -47,20 +47,26 @@
     
     <main class="main">
       <textarea  name="text" id="text" placeholder="digite ou cole seu texto"></textarea>
+      
       <div class="containerMessagesChat">
         <span id="currentChatSpan">
           <i class='bx bxs-user' style='color:#f4f4f4' ></i>&nbsp;
         </span>
       </div>
+
       <div class="contactsView">
         <div class="searchContacts">
-          <div class="searchOptions">
-            btns
-          </div>
+
           <div class="searchInput">
             <input type="text" class="input" placeholder="pesquise">
-            <button class="btn">
+            <button class="btn btn-rounded">
               <i class='bx bx-search-alt-2' style='color:#f4f4f4'  ></i>
+            </button>
+          </div>
+
+          <div class="searchOptions">
+            <button class="btn btn-rounded">
+              <i class='bx bxs-eraser' style='color:#f4f4f4'  ></i>
             </button>
           </div>
         </div>
@@ -101,8 +107,8 @@
           <i class='bx bx-dots-vertical-rounded'></i>
         </button>
       </div>
-      <input type="text" id="inputChat" class="input" placeholder="escreva aqui.">
-      <button class="btn" id="sendMessage">
+      <input type="text" id="inputChat" class="input" placeholder="Mensagem">
+      <button class="btn btn-rounded" id="sendMessage">
         <i class='bx bx-send' style='color:#f4f4f4' ></i>
       </button>
     </footer>

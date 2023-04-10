@@ -10,17 +10,26 @@ server.on("user_connected", (username) => {
 const containerMessagesChat = document.querySelector(".containerMessagesChat")
 
 server.on("new_message", (msg) => {
+
   containerMessagesChat.innerHTML += `
   <div class="boxMessage receiver">
     <span>${msg.sender}</span>
     <h5>${msg.message}</h5>
   </div>
   `
+  
+  if((containerMessagesChat.scrollTop + containerMessagesChat.clientHeight) + 100 < containerMessagesChat.scrollHeight) {
+    return 
+  }
+  
+  containerMessagesChat.scrollTop = containerMessagesChat.scrollHeight
+  
 })
 
 let myUser;
 let Friends = [];
 let currentChat;
+
 
 if(localStorage.getItem("myUser")) { 
   server.emit("user_connected", localStorage.getItem("myUser"))
@@ -38,6 +47,12 @@ const listContacts = document.querySelector(".listContacts")
 const selectCurrentChat = (id) => {
   currentChat = id
   currentChatSpan.innerHTML = id
+
+  document.querySelectorAll(".li").forEach(item => {
+    item.classList.remove("li-active")
+  })
+
+  document.querySelector(`[data-id='${id}']`).classList.add("li-active")
 }
 
 document.body.addEventListener("click", function (evt) {
@@ -90,6 +105,7 @@ btnViewListFriend.addEventListener("click", () => {
   }
 })
 
+
 btnViewText.addEventListener("click", () => {
   chat = false
 
@@ -102,6 +118,9 @@ btnViewText.addEventListener("click", () => {
   footerChat.style.display = "none"
   containerMessagesChat.style.display = "none"
   contactsView.style.display = "none"
+
+  btnViewChat.classList.remove("btnViewActive")
+  btnViewText.classList.add("btnViewActive")
 })
 
 btnViewChat.addEventListener("click", () => {
@@ -115,6 +134,9 @@ btnViewChat.addEventListener("click", () => {
   footerChat.style.display = "flex"
   optionsChat.style.display = "flex"
   contactsView.style.display = "none"
+
+  btnViewText.classList.remove("btnViewActive")
+  btnViewChat.classList.add("btnViewActive")
 })
 
 if(chat) {
@@ -266,7 +288,7 @@ btnAddFriend.addEventListener("click", () => {
 
     Friends.forEach(i => {
       listContacts.innerHTML += `
-        <li class="li" onclick="funSelectFriend('${i}')">
+        <li class="li">
           ${i}
         </li>
       `
@@ -341,9 +363,10 @@ const inputChat = document.getElementById("inputChat")
 
 const sendMessage = document.getElementById("sendMessage")
 
-sendMessage.addEventListener("click", () => {
-  if(inputChat.value !== "") {
-    console.log(myUser)
+const funSendMessage = () => {
+  
+  if(inputChat.value !== "" && currentChat !== undefined) {
+
     const msg = {
       sender: myUser,
       receiver: currentChat,
@@ -353,13 +376,44 @@ sendMessage.addEventListener("click", () => {
     
     server.emit("send_message", msg)
 
-    console.log(msg)
-
     containerMessagesChat.innerHTML += `
       <div class="boxMessage sender">
         <span>${msg.sender}</span>
         <h5>${msg.message}</h5>
       </div>
     `
+    inputChat.value = ""
   }
-})
+}
+
+const funSendMessageInput = ({ code }) => {
+  
+  if(inputChat.value !== "" && code === "Enter" && currentChat !== undefined) {
+    
+    const msg = {
+      sender: myUser,
+      receiver: currentChat,
+      message: inputChat.value
+    }
+    
+    
+    server.emit("send_message", msg)
+    
+    containerMessagesChat.innerHTML += `
+    <div class="boxMessage sender">
+    <span>${msg.sender}</span>
+    <h5>${msg.message}</h5>
+    </div>
+    `
+    inputChat.value = ""
+
+    containerMessagesChat.scrollTop = containerMessagesChat.scrollHeight
+
+  }
+}
+
+sendMessage.addEventListener("click", funSendMessage)
+
+inputChat.addEventListener("keydown", funSendMessageInput)
+
+

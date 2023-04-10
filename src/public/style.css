@@ -14,7 +14,6 @@
   --white: #f4f4f4;
   --green: #005e34;
   --rebecca: #7c179a;
-  --yellow: #23ff32;
 }
 
 
@@ -27,7 +26,7 @@ html, body {
   background-color: var(--dark);
   background-image: url("./code.jpg");
   background-position: center center;
-  background-size: 90%;
+  background-size: 390%;
 
   color: var(--silver);
 
@@ -36,11 +35,32 @@ html, body {
   justify-content: center;
 }
 
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+
+::-webkit-scrollbar-thumb {
+  background: var(--green);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  opacity: .8;
+}
+
 #app {
   flex: 1;
   width: 100%;
   max-width: 1024px;
   min-height: 80vh;
+  max-height: 80vh;
+  overflow: hidden;
   background-color: var(--dark2);
 
   display: flex;
@@ -48,7 +68,7 @@ html, body {
 }
 
 .header {
-  min-height: 45px;
+  min-height: 60px;
   background-color: var(--rebecca);
 
   display: flex;
@@ -62,22 +82,29 @@ html, body {
   display: none;
   flex-direction: column;
   min-width: 260px;
-  background-color: var(--dark);
+  background-color: rgba(33,33,33, .6);
 }
 
 .li {
   height: 60px;
-  font-size: 14px;
+  font-size: 12px;
 
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 10px;
+  margin: 10px;
+  border-radius: 4px;
 
   user-select: none;
   cursor: pointer;
-  background-color: var(--dark3);
+  background-color: var(--dark);
+  border-left: solid 8px transparent;
+}
 
+.li-active {
+  transition: all ease .4s;
+  border-left: solid 8px var(--green);
+  background-color: var(--dark2);
 }
 
 .searchInput {
@@ -91,6 +118,12 @@ html, body {
   flex-direction: column;
   gap: 10px;
   padding: 10px;
+}
+
+.searchOptions {
+  display: flex;
+  align-items: center;
+  justify-content: end;
 }
 
 .optionsChat {
@@ -116,13 +149,15 @@ html, body {
   background-color: var(--dark2);
   flex: 1;
   resize: none;
-  padding: 25px 10px 10px 10px;
+  padding: 40px 10px 10px 10px;
 
   border: none;
   outline: none;
 
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  scroll-behavior: smooth;
 }
 
 .boxMessage {
@@ -187,23 +222,25 @@ html, body {
 }
 
 #currentChatSpan {
-  position: absolute;
-  top: 26px;
+  position: sticky;
+  top: 0px;
   left: 50%;
   transform: translate(-50%, -50%);
   
-  width: fit-content;
-  font-size: 10px;
-  background-color: var(--dark3);
-  color: white;
-  padding: 4px 10px;
+  width: 310px;
+  font-size: 14px;
+  background-color: rgba(33,33,33, .9);
+  color: var(--green);
+  text-shadow: 0 0 4px var(--dark3);
+  text-align: center;
+  padding: 6px 14px;
   border-radius: 4px;
-  font-weight: bold;
+  font-weight: 100;
   user-select: none ;
 }
 
 .footer {
-  min-height: 45px;
+  min-height: 60px;
   background-color: var(--rebecca);
   
   display: flex;
@@ -214,13 +251,13 @@ html, body {
 }
 
 .footerChat {
-  min-height: 45px;
+  min-height: 60px;
   background-color: var(--rebecca);
   
   display: none;
   justify-content: space-between;
   align-items: center;
-  gap: 4px;
+  gap: 10px;
 
   padding: 0 16px;
 }
@@ -333,15 +370,20 @@ dialog > .wrapper {
   gap: 20px;
 }
 
-
 .input {
   flex: 1;
-  min-height: 30px;
+  min-height: 45px;
   background-color: var(--dark);
+  outline: none;
   border: solid 1px var(--dark3);
   color: var(--silver);
   border-radius: 4px;
-  padding: 0 10px;
+  padding: 0 16px;
+  text-transform: capitalize;
+}
+
+.input:hover {
+  outline: solid 2px var(--silver);
 }
 
 .btn {
@@ -351,7 +393,7 @@ dialog > .wrapper {
   font-weight: bold;
   padding: 4px 16px;
   border-radius: 4px;
-  min-height: 30px;
+  min-height: 45px;
 
   display: flex;
   justify-content: center;
@@ -363,8 +405,12 @@ dialog > .wrapper {
 
 .btn:hover {
   transition: all ease .4s;
-  background-color: var(--dark3);
+  background-color: var(--green);
   border: solid 1px var(--dark3);
+}
+
+.btn:active {
+  transform: translate(-4px, -4px);
 }
 
 .btn i {
@@ -372,8 +418,8 @@ dialog > .wrapper {
 }
 
 .btn-rounded {
-  width: 30px;
-  height: 30px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   padding: 0;
 }
@@ -399,13 +445,18 @@ dialog > .wrapper {
   gap: 4px;
 }
 
+.btnViewActive {
+  transition: all ease .5s;
+  box-shadow: inset 0 0 13px var(--green);
+}
+
 #text {
   flex: 1;
   resize: none;
   padding: 10px;
   border: none;
   outline: none;
-  caret-color: #7c179a;
+  caret-color: var(--white);
   background-color: var(--dark2);
   color: var(--silver);
 }
