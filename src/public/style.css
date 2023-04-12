@@ -149,7 +149,7 @@ html, body {
   background-color: var(--dark2);
   flex: 1;
   resize: none;
-  padding: 40px 10px 10px 10px;
+  padding: 4px 10px 10px 10px;
 
   border: none;
   outline: none;
@@ -161,8 +161,8 @@ html, body {
 }
 
 .boxMessage {
-  margin: 4px;
-  padding: 10px;
+  margin: 10px;
+  padding: 4px 16px 4px 16px;
 }
 
 .boxMessage.receiver {
@@ -223,19 +223,22 @@ html, body {
 
 #currentChatSpan {
   position: sticky;
-  top: 0px;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  display: none;
+  top: 0;
+  left: 16px;
   
-  width: 310px;
-  font-size: 14px;
+  width: 100%;
   background-color: rgba(33,33,33, .9);
+  
+  padding: 6px 14px;
+  border-radius: 4px;
+  
+  font-size: 14px;
   color: var(--green);
   text-shadow: 0 0 4px var(--dark3);
   text-align: center;
-  padding: 6px 14px;
-  border-radius: 4px;
   font-weight: 100;
+  
   user-select: none ;
 }
 

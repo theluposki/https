@@ -1,5 +1,7 @@
 import "/socket.io/socket.io.js"
 import { importKey, generateKey, exportKey, encrypt, decrypt } from "./cryptoUtil.js"
+import { formatDateTime } from "./util.js"
+import { addMessage, getMessagesWhereSenderAndReceiver } from "./api.local.js" 
 
 const server = io()
 
@@ -9,12 +11,19 @@ server.on("user_connected", (username) => {
 
 const containerMessagesChat = document.querySelector(".containerMessagesChat")
 
-server.on("new_message", (msg) => {
+server.on("new_message", async (msg) => {
 
+  const nMsg = await addMessage({
+    sender: msg.sender,
+    receiver: msg.receiver,
+    message: msg.message,
+  })
+  
   containerMessagesChat.innerHTML += `
   <div class="boxMessage receiver">
-    <span>${msg.sender}</span>
-    <h5>${msg.message}</h5>
+    <span>${nMsg.sender}</span>
+    <h5>${nMsg.message}</h5>
+    <span>${formatDateTime(nMsg.createdAt)}</span>
   </div>
   `
   
@@ -28,7 +37,11 @@ server.on("new_message", (msg) => {
 
 let myUser;
 let Friends = [];
+let CurrentMessages = []
 let currentChat;
+
+
+
 
 
 if(localStorage.getItem("myUser")) { 
@@ -44,15 +57,34 @@ const currentChatSpan = document.getElementById("currentChatSpan")
 
 const listContacts = document.querySelector(".listContacts")
 
-const selectCurrentChat = (id) => {
+const selectCurrentChat = async (id) => {
+  containerMessagesChat.innerHTML = `
+  <span id="currentChatSpan">
+    <i class='bx bxs-user' style='color:#f4f4f4' ></i>&nbsp;
+  </span>
+  `
   currentChat = id
   currentChatSpan.innerHTML = id
-
+  
   document.querySelectorAll(".li").forEach(item => {
     item.classList.remove("li-active")
   })
-
+  
   document.querySelector(`[data-id='${id}']`).classList.add("li-active")
+
+  CurrentMessages = await getMessagesWhereSenderAndReceiver(myUser, currentChat)
+
+  CurrentMessages.forEach(item => {
+    containerMessagesChat.innerHTML += `
+      <div class="boxMessage ${item.sender === myUser? "sender": "receiver"}">
+        <span>${item.sender}</span>
+        <h5>${item.message}</h5>
+        <span>${formatDateTime(item.createdAt)}</span>
+      </div>
+    `
+  })
+
+  containerMessagesChat.scrollTop = containerMessagesChat.scrollHeight
 }
 
 document.body.addEventListener("click", function (evt) {
@@ -118,6 +150,7 @@ btnViewText.addEventListener("click", () => {
   footerChat.style.display = "none"
   containerMessagesChat.style.display = "none"
   contactsView.style.display = "none"
+  currentChatSpan.style.display = "none"
 
   btnViewChat.classList.remove("btnViewActive")
   btnViewText.classList.add("btnViewActive")
@@ -134,6 +167,7 @@ btnViewChat.addEventListener("click", () => {
   footerChat.style.display = "flex"
   optionsChat.style.display = "flex"
   contactsView.style.display = "none"
+  currentChatSpan.style.display = "block"
 
   btnViewText.classList.remove("btnViewActive")
   btnViewChat.classList.add("btnViewActive")
@@ -160,12 +194,6 @@ if(chat) {
   contactsView.style.display = "none"
 }
 
-
-
-
-
-
-/** Socket */
 const btnModalNkey = document.querySelector('.btnModalNkey')
 const btnCloseModalNkey = document.querySelector(".btnCloseModalNkey")
 const dialogModalNkey = document.getElementById("dialogModalNkey")
@@ -370,7 +398,8 @@ const funSendMessage = () => {
     const msg = {
       sender: myUser,
       receiver: currentChat,
-      message: inputChat.value
+      message: inputChat.value,
+      createdAt: Date.now()
     }
     
     
@@ -380,29 +409,35 @@ const funSendMessage = () => {
       <div class="boxMessage sender">
         <span>${msg.sender}</span>
         <h5>${msg.message}</h5>
+        <span>${msg.createdAt}</span>
       </div>
     `
     inputChat.value = ""
+
+    containerMessagesChat.scrollTop = containerMessagesChat.scrollHeight
   }
 }
 
-const funSendMessageInput = ({ code }) => {
+const funSendMessageInput = async ({ code }) => {
   
   if(inputChat.value !== "" && code === "Enter" && currentChat !== undefined) {
     
-    const msg = {
+    const msg =  await addMessage({
       sender: myUser,
       receiver: currentChat,
-      message: inputChat.value
-    }
+      message: inputChat.value,
+    })
     
     
-    server.emit("send_message", msg)
+    console.log(await msg)
+    
+    server.emit("send_message", await msg)
     
     containerMessagesChat.innerHTML += `
-    <div class="boxMessage sender">
-    <span>${msg.sender}</span>
-    <h5>${msg.message}</h5>
+      <div class="boxMessage sender">
+        <span>${msg.sender}</span>
+        <h5>${msg.message}</h5>
+        <span>${msg.createdAt}</span>
     </div>
     `
     inputChat.value = ""
